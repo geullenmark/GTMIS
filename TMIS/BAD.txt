@@ -1,0 +1,148 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Tax Payment',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(
+            primarySwatch:
+                Colors.blue), // Updated to use colorScheme.background
+      ),
+      home: TaxPaymentForm(),
+    );
+  }
+}
+
+class TaxPaymentForm extends StatefulWidget {
+  @override
+  _TaxPaymentFormState createState() => _TaxPaymentFormState();
+}
+
+class _TaxPaymentFormState extends State<TaxPaymentForm> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('BUREAU OF INTERNAL REVENUE TAX PAYMENT'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            // Handle back action
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              // Handle profile action
+            },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Text('Fields with * (asterisk) are required/mandatory'),
+            SizedBox(height: 10),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Amount:*',
+                hintText: 'Amount to pay',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'TIN:*',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'TIN Branch:*',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Form Type:*',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Tax Type:*',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Return Period:*',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Email Address:*',
+              ),
+            ),
+            SizedBox(height: 20),
+            Text('Payment Mode'),
+            DropdownButtonFormField<String>(
+              items: [
+                DropdownMenuItem(value: 'LAND BANK', child: Text('LAND BANK')),
+                // Add other bank options here
+              ],
+              onChanged: (value) {
+                // Handle bank selection
+              },
+              decoration: InputDecoration(
+                labelText: 'Select Bank',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Select Bank Account*',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Bank Account Number*',
+              ),
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Enter PIN receive*',
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Handle form submission
+              },
+              child: Text('Submit'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Handle printing documents
+              },
+              child: Text('Print Documents'),
+              style: ElevatedButton.styleFrom(primary: Colors.green),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home', // Added label
+          ),
+          // Add more BottomNavigationBarItems if needed
+        ],
+      ),
+    );
+  }
+}
