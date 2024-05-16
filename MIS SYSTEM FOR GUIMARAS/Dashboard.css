@@ -24,7 +24,7 @@ body {
     justify-content: flex-end;
 }
 
-  #top-nav-links a {
+#top-nav-links a {
     color: #fff;
     text-decoration: none;
     margin-left: 10px;
@@ -113,7 +113,7 @@ body {
 }
 
 .box-container {
-    padding-top: 80px;
+    margin-top: 160px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -154,24 +154,16 @@ body {
 }
 
 .textbox {
-    position: absolute;
-    left: 360px;
-    box-shadow:  0 0 10px rgba(0, 0, 0, 0.3);;
-    margin-top: 40px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    width: 1120px;
+    width: 75%;
     height: 350px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-left: 310px; /* Adjust margin-left to avoid overlap with the sidebar */
 }
 
-.textbox {
-    width: 75%; /* Adjust the width as needed */
-    height: 500px; /* Adjust the height as needed */
-    background-color: #f0f0f0; /* Set background color */
-    margin: 50px auto; /* Center the box horizontally with some top margin */
-    padding: 20px; /* Add padding inside the box */
-    border-radius: 10px; /* Add rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
-}
 /* Style for h2 with class 'topic' inside .box1 */
 .box-container .box .text .topic {
     font-size: 18px; /* Adjust the font size as per your requirement */

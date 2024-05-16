@@ -1,65 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://kit.fontawesome.com/c33a19923e.js" crossorigin="anonymous"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
-<link rel="stylesheet" href="Accomodation Establishment.css">
-<title>AccommodationEstablishments</title>  
-
-</head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/c33a19923e.js" crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <link rel="stylesheet" href="Accomodation Establishment.css">
+    <title>Accommodation Establishments</title>
+</head>
 <body>
 
-  <div id="logo">
-    <img src="assets/icons/gtmis-logo.png.png" alt="GT-MIS Logo">
-  </div>
+<div id="logo">
+    <img src="assets/icons/gtmis-logo.png" alt="GT-MIS Logo">
+</div>
 
-  <div id="top-navbar">
+<div id="top-navbar">
     <div id="top-nav-links">
-      <a href="#"><div class="icon1"><ion-icon name="search-outline"></ion-icon></div></a>
-      <a href="#"><div class="icon1"><ion-icon name="notifications"></ion-icon></div></a>
-      <a href="#"><div class="icon1"><ion-icon name="mail"></ion-icon></div></a>
+        <a href="#"><div class="icon1"><ion-icon name="search-outline"></ion-icon></div></a>
+        <a href="#"><div class="icon1"><ion-icon name="notifications"></ion-icon></div></a>
+        <a href="#"><div class="icon1"><ion-icon name="mail"></ion-icon></div></a>
     </div>
-  </div>
+</div>
 
-  <div id="sidebar">
+<div id="sidebar">
     <div id="nav">
-      <a href="Dashboard.html"><img src="assets/icons/dashboard.png" alt="Dashboard Icon"> Dashboard</a>
-      <a href="Spending Analysis.html"><img src="assets/icons/analysis.png" alt="Spending Analysis Icon"> Spending Analysis</a>
-      <a href="Report Generation.html"><img src="assets/icons/report.png" alt="Report Generation Icon"> Report Generation</a>
-      <a href="#"><img src="assets/icons/setting.png" alt="Setting Icon"> Setting</a>
+        <a href="Dashboard.html"><img src="assets/icons/dashboard.png" alt="Dashboard Icon"> Dashboard</a>
+        <a href="Spending Analysis.html"><img src="assets/icons/analysis.png" alt="Spending Analysis Icon"> Spending Analysis</a>
+        <a href="Report Generation.html"><img src="assets/icons/report.png" alt="Report Generation Icon"> Report Generation</a>
+        <a href="#"><img src="assets/icons/setting.png" alt="Setting Icon"> Setting</a>
     </div>
     <div id="logout">
-      <!-- Changed the button to an anchor tag with an href to Log in.html -->
-      <a href="Log in.html"><button>Logout</button></a>
+        <a href="Log in.html"><button>Logout</button></a>
     </div>
-  </div>
+</div>
 
-  <div class="tophead">Guest Night</div>
-  <table>
-    <thead>
-        <tr>
-            <th>Name of Accommodation Establishment</th>
-            <th>Type</th>
-            <th>Location</th>
-            <th>Contact No.</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-    <tbody id="establishment-table-body">
-        <!-- Establishment data will be displayed here -->
-    </tbody>
-</table>
+<div class="tophead">Accommodation Establishment</div>
+<div id="data-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Name of Accommodation Establishment</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Contact No.</th>
+                <th>Email</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="establishment-table-body">
+            <!-- Establishment data will be displayed here -->
+        </tbody>
+    </table>
+    <div id="pagination">
+        <button id="prev-page" onclick="prevPage()">Previous</button>
+        <button id="next-page" onclick="nextPage()">Next</button>
+    </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
-import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js";
 
-// Firebase configuration
 const firebaseConfig = {
 apiKey: "AIzaSyCeSy9qMibAAYCZg5cipJ8097qeh3vwF08",
 authDomain: "testingapp-589a1.firebaseapp.com",
@@ -74,43 +77,72 @@ measurementId: "G-ZJP7HRFH98"
 const app = initializeApp(firebaseConfig);
 const db = getDatabase();
 
-// Function to display establishment data
+let currentPage = 1;
+const rowsPerPage = 10;
+let establishmentData = [];
+
 function displayEstablishmentData() {
     const tbody = document.getElementById('establishment-table-body');
+    tbody.innerHTML = "";
 
-    // Establishments reference
-    const establishmentRef = ref(db, "EstablishmentID");
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const pageData = establishmentData.slice(start, end);
 
-    onChildAdded(establishmentRef, (snapshot) => {
-        const establishmentData = snapshot.val();
-
-        const name = establishmentData.name || "N/A";
-        const type = establishmentData.type || "N/A";
-        const location = establishmentData.location || "N/A";
-        const contactInfo = establishmentData.contactInfo || "N/A";
-        const email = establishmentData.email || "N/A";
-
-        // Add row to the table
+    pageData.forEach(establishment => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${name}</td>
-            <td>${type}</td>
-            <td>${location}</td>
-            <td>${contactInfo}</td>
-            <td>${email}</td>
+            <td>${establishment.name || "N/A"}</td>
+            <td>${establishment.type || "N/A"}</td>
+            <td>${establishment.location || "N/A"}</td>
+            <td>${establishment.contactInfo || "N/A"}</td>
+            <td>${establishment.email || "N/A"}</td>
+            <td><button class="see-more-btn" onclick="toggleAdditionalData(this)">See More</button></td>
         `;
         tbody.appendChild(row);
     });
+
+    updatePaginationButtons();
 }
 
-// Call the displayEstablishmentData function when the window loads
-document.addEventListener("DOMContentLoaded", function() {
+function toggleAdditionalData(button) {
+    const row = button.parentElement.parentElement;
+    row.classList.toggle('additional-data');
+    button.textContent = row.classList.contains('additional-data') ? 'See Less' : 'See More';
+}
+
+function updatePaginationButtons() {
+    document.getElementById('prev-page').disabled = currentPage === 1;
+    document.getElementById('next-page').disabled = currentPage === Math.ceil(establishmentData.length / rowsPerPage);
+}
+
+function nextPage() {
+    currentPage++;
     displayEstablishmentData();
+}
+
+function prevPage() {
+    currentPage--;
+    displayEstablishmentData();
+}
+
+function fetchEstablishmentData() {
+    const establishmentRef = ref(db, "EstablishmentID");
+
+    onValue(establishmentRef, (snapshot) => {
+        establishmentData = [];
+        snapshot.forEach((establishmentSnapshot) => {
+            const data = establishmentSnapshot.val();
+            establishmentData.push(data);
+        });
+        displayEstablishmentData();
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    fetchEstablishmentData();
 });
-
 </script>
-
-  <script src="#"></script>
 
 </body>
 </html>
