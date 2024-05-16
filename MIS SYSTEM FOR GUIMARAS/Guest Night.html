@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://kit.fontawesome.com/c33a19923e.js" crossorigin="anonymous"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+<link rel="stylesheet" href="Guest Night.css">
+<title>Guest Night</title>  
+
+</head> 
+<body>
+
+  <div id="logo">
+    <img src="assets/icons/gtmis-logo.png.png" alt="GT-MIS Logo">
+  </div>
+
+  <div id="top-navbar">
+    <div id="top-nav-links">
+      <a href="#"><div class="icon1"><ion-icon name="search-outline"></ion-icon></div></a>
+      <a href="#"><div class="icon1"><ion-icon name="notifications"></ion-icon></div></a>
+      <a href="#"><div class="icon1"><ion-icon name="mail"></ion-icon></div></a>
+    </div>
+  </div>
+
+  <div id="sidebar">
+    <div id="nav">
+      <a href="Dashboard.html"><img src="assets/icons/dashboard.png" alt="Dashboard Icon"> Dashboard</a>
+      <a href="Spending Analysis.html"><img src="assets/icons/analysis.png" alt="Spending Analysis Icon"> Spending Analysis</a>
+      <a href="Report Generation.html"><img src="assets/icons/report.png" alt="Report Generation Icon"> Report Generation</a>
+      <a href="#"><img src="assets/icons/setting.png" alt="Setting Icon"> Setting</a>
+    </div>
+    <div id="logout">
+      <!-- Changed the button to an anchor tag with an href to Log in.html -->
+      <a href="Log in.html"><button>Logout</button></a>
+    </div>
+  </div>
+
+  <div class="tophead">Guest Night</div>
+  <table>
+    <thead>
+        <tr>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Middle Name</th>
+            <th>Nationality</th>
+            <th>Sex</th>
+            <th>Birthday</th>
+            <th>Age</th>
+            <th>Civil Status</th>
+            <th>Visitor Type</th>
+        </tr>
+    </thead>
+    <tbody id="tourist-table-body">
+        <!-- Tourist data will be displayed here -->
+    </tbody>
+</table>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js";
+
+// Firebase configuration
+const firebaseConfig = {
+apiKey: "AIzaSyCeSy9qMibAAYCZg5cipJ8097qeh3vwF08",
+authDomain: "testingapp-589a1.firebaseapp.com",
+databaseURL: "https://testingapp-589a1-default-rtdb.firebaseio.com",
+projectId: "testingapp-589a1",
+storageBucket: "testingapp-589a1.appspot.com",
+messagingSenderId: "920622301670",
+appId: "1:920622301670:web:8937030299600fede51627",
+measurementId: "G-ZJP7HRFH98"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getDatabase();
+
+// Function to display required tourist data
+function displayTouristData() {
+    const tbody = document.getElementById('tourist-table-body');
+
+    // Fetch tourist data
+    const touristRef = ref(db, "TouristID");
+
+    onValue(touristRef, (snapshot) => {
+        tbody.innerHTML = "";
+
+        snapshot.forEach((touristSnapshot) => {
+            const touristData = touristSnapshot.val();
+            const lastName = touristData.lastName || "N/A";
+            const firstName = touristData.firstName || "N/A";
+            const middleName = touristData.middleName || "N/A";
+            const nationality = touristData.nationality || "N/A";
+            const sex = touristData.sex || "N/A";
+            const birthday = touristData.birthday || "N/A";
+            const age = touristData.age || "N/A";
+            const civilStatus = touristData.civilStatus || "N/A";
+            const visitorType = touristData.visitorType || "N/A";
+
+            // Add row to the table
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${lastName}</td>
+                <td>${firstName}</td>
+                <td>${middleName}</td>
+                <td>${nationality}</td>
+                <td>${sex}</td>
+                <td>${birthday}</td>
+                <td>${age}</td>
+                <td>${civilStatus}</td>
+                <td>${visitorType}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    });
+}
+
+// Call the displayTouristData function when the window loads
+window.onload = displayTouristData;
+</script>
+
+
+  
+  <script src="#"></script>
+
+</body>
+</html>
