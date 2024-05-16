@@ -24,7 +24,7 @@
     measurementId: "G-ZJP7HRFH98"
   };
 
-  // Initialize Firebase
+// Initialize Firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 } else {
@@ -34,15 +34,15 @@ if (!firebase.apps.length) {
 // Reference to the database
 var database = firebase.database();
 
-// Function to count unique user IDs
-function countUniqueUserIDs() {
-  // Reference to the "UserID" node in the database
-  var userIDRef = database.ref('UserID');
+// Function to count unique tourist IDs
+function countUniqueTouristIDs() {
+  // Reference to the "TouristID" node in the database
+  var touristIDRef = database.ref('TouristID');
 
   // Listen for changes in the data
-  userIDRef.on('value', function(snapshot) {
-    var uniqueIDs = snapshot.numChildren(); // Counting the number of children (unique user IDs)
-    document.getElementById('uniqueIDs').innerText = "Total unique user: " + uniqueIDs;
+  touristIDRef.on('value', function(snapshot) {
+    var uniqueIDs = snapshot.numChildren(); // Counting the number of children (unique tourist IDs)
+    document.getElementById('uniqueIDs').innerText = "Total unique tourist: " + uniqueIDs;
   });
 }
 
@@ -112,10 +112,11 @@ function countGuestNightTourists() {
 
 window.onload = function () {
   countEstablishmentAccommodationType();
-  countUniqueUserIDs();
+  countUniqueTouristIDs();
   countGuestNightTourists(); // Call the function to count tourists with "Guest Night" TourType
 };
 </script>
+
 </head> 
 <body>
 
