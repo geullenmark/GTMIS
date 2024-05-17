@@ -64,14 +64,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.5.0/firebase
 import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.5.0/firebase-database.js";
 
 const firebaseConfig = {
-apiKey: "AIzaSyCeSy9qMibAAYCZg5cipJ8097qeh3vwF08",
-authDomain: "testingapp-589a1.firebaseapp.com",
-databaseURL: "https://testingapp-589a1-default-rtdb.firebaseio.com",
-projectId: "testingapp-589a1",
-storageBucket: "testingapp-589a1.appspot.com",
-messagingSenderId: "920622301670",
-appId: "1:920622301670:web:8937030299600fede51627",
-measurementId: "G-ZJP7HRFH98"
+    apiKey: "AIzaSyCeSy9qMibAAYCZg5cipJ8097qeh3vwF08",
+    authDomain: "testingapp-589a1.firebaseapp.com",
+    databaseURL: "https://testingapp-589a1-default-rtdb.firebaseio.com",
+    projectId: "testingapp-589a1",
+    storageBucket: "testingapp-589a1.appspot.com",
+    messagingSenderId: "920622301670",
+    appId: "1:920622301670:web:8937030299600fede51627",
+    measurementId: "G-ZJP7HRFH98"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -131,10 +131,14 @@ function fetchEstablishmentData() {
 
     onValue(establishmentRef, (snapshot) => {
         establishmentData = [];
+
         snapshot.forEach((establishmentSnapshot) => {
             const data = establishmentSnapshot.val();
-            establishmentData.push(data);
+            if (data.type === "Accommodation Establishment") {
+                establishmentData.push(data);
+            }
         });
+
         displayEstablishmentData();
     });
 }

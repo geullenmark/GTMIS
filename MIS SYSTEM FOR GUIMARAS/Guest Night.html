@@ -95,15 +95,15 @@
           pageData.forEach(tourist => {
               const row = document.createElement('tr');
               row.innerHTML = `
-                  <td>${tourist.lastName}</td>
-                  <td>${tourist.firstName}</td>
-                  <td>${tourist.middleName}</td>
-                  <td>${tourist.nationality}</td>
-                  <td>${tourist.sex}</td>
-                  <td>${tourist.birthday}</td>
-                  <td>${tourist.age}</td>
-                  <td>${tourist.civilStatus}</td>
-                  <td>${tourist.visitorType}</td>
+                  <td>${tourist.lastName || "N/A"}</td>
+                  <td>${tourist.firstName || "N/A"}</td>
+                  <td>${tourist.middleName || "N/A"}</td>
+                  <td>${tourist.nationality || "N/A"}</td>
+                  <td>${tourist.sex || "N/A"}</td>
+                  <td>${tourist.birthday || "N/A"}</td>
+                  <td>${tourist.age || "N/A"}</td>
+                  <td>${tourist.civilStatus || "N/A"}</td>
+                  <td>${tourist.visitorType || "N/A"}</td>
                   <td><button class="see-more-btn" onclick="toggleAdditionalData(this)">See More</button></td>
               `;
               tbody.appendChild(row);
@@ -140,7 +140,9 @@
               touristData = [];
               snapshot.forEach((touristSnapshot) => {
                   const data = touristSnapshot.val();
-                  touristData.push(data);
+                  if (data.TourType === "Guest Night") {
+                      touristData.push(data);
+                  }
               });
               displayTouristData();
           });
